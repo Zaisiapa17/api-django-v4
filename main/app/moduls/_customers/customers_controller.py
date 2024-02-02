@@ -26,6 +26,9 @@ def getAllCustomers(request):
     except customers_model.Customer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 def getCustomerById(pk):
     try:
@@ -38,6 +41,9 @@ def getCustomerById(pk):
         return Response(data_response)
     except customers_model.Customer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def addCustomer(request):
@@ -55,8 +61,24 @@ def addCustomer(request):
     except customers_model.Customer.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-def deleteCustomer(request, pk):
-    return
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+def deleteCustomer(pk):
+    try:
+        customer = customers_model.Customer.objects.get(pk=pk)
+        customer.delete()
+        data_response = {
+            'status': "success delete customer",
+        }
+        return Response(data_response, status=status.HTTP_204_NO_CONTENT)
+
+    except customers_model.Customer.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def editCustomer(request, pk):

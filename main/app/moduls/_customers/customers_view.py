@@ -17,7 +17,7 @@ def customer(request, pk):
         return customers_controller.getCustomerById(pk)
     
     elif request.method == 'DELETE':
-        return customers_controller.deleteCustomer(request, pk)
+        return customers_controller.deleteCustomer(pk)
     
     elif request.method == 'PUT':
         return customers_controller.editCustomer(request, pk)
