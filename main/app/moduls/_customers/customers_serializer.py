@@ -8,3 +8,10 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = customers_model.Customer
         fields = ['id', 'customer_name', 'phone', 'email']
+
+
+class AddCustomerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = customers_model.Customer
+        fields = ['id', 'customer_name', 'phone', 'email', 'password']

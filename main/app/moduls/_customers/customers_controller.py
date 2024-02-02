@@ -41,8 +41,19 @@ def getCustomerById(pk):
 
 
 def addCustomer(request):
-    return
+    try:
+        serializer = customers_serializer.AddCustomerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            data_response = {
+                'status': "success add customer",
+            }
+            return Response(data_response, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    except customers_model.Customer.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 def deleteCustomer(request, pk):
     return
