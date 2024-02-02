@@ -73,8 +73,7 @@ def deleteCustomer(pk):
 def editCustomer(request, pk):
     try:
         customer = customers_model.Customer.objects.get(pk=pk)
-        print(request.data)
-        serializer = customers_serializer.ActCustomerSerializer(customer, data=request.data)
+        serializer = customers_serializer.ActCustomerSerializer(customer, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             data_response = {
