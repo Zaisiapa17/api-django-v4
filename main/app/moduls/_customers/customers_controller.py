@@ -22,9 +22,6 @@ def getAllCustomers(request):
             'data': serializer.data,
         }
         return Response(data_response)
-    
-    except customers_model.Customer.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -39,8 +36,6 @@ def getCustomerById(pk):
             'data': serializer.data,
         }
         return Response(data_response)
-    except customers_model.Customer.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -48,7 +43,7 @@ def getCustomerById(pk):
 
 def addCustomer(request):
     try:
-        serializer = customers_serializer.AddCustomerSerializer(data=request.data)
+        serializer = customers_serializer.ActCustomerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             data_response = {
@@ -57,9 +52,6 @@ def addCustomer(request):
             return Response(data_response, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    except customers_model.Customer.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -74,12 +66,21 @@ def deleteCustomer(pk):
         }
         return Response(data_response, status=status.HTTP_204_NO_CONTENT)
 
-    except customers_model.Customer.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def editCustomer(request, pk):
-    return
+    try:
+        customer = customers_model.Customer.objects.get(pk=pk)
+        print(request.data)
+        serializer = customers_serializer.ActCustomerSerializer(customer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            data_response = {
+                'status': "success edit customer",
+            }
+            return Response(data_response, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

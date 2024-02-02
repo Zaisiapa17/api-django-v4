@@ -10,7 +10,7 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = ['id', 'customer_name', 'phone', 'email']
 
 
-class AddCustomerSerializer(serializers.ModelSerializer):
+class ActCustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = customers_model.Customer
