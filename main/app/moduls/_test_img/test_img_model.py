@@ -6,4 +6,4 @@ class Picture(models.Model):
     img_name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.imger_name
+        return self.img_name
