@@ -15,6 +15,7 @@ def allowed_file(filename):
 
 def crop_and_save_image(input_file, output_path, target_width, target_height):
     img = Image.open(input_file)
+    print(img)
     
     # Calculate the aspect ratio of the target dimensions
     target_aspect_ratio = target_width / target_height
@@ -43,6 +44,9 @@ def crop_and_save_image(input_file, output_path, target_width, target_height):
     
     # Crop the image
     cropped_img = img.crop((left_margin, top_margin, right_margin, bottom_margin))
+    
+    # delete original file
+    os.remove(input_file)
     
     # Save the cropped image
     cropped_img.save(output_path)
@@ -75,7 +79,7 @@ def fileSave(request):
 
     # Crop and save the image
     cropped_file_path = f'static/uploads/cropped/{new_file_name}'
-    crop_and_save_image(save_file_path, cropped_file_path, target_width=500, target_height=500)
+    crop_and_save_image(save_file_path, cropped_file_path, target_width=500, target_height=200)
 
     # Save the new file name in the database
     test_img_model.Picture.objects.create(img_name=new_file_name)
